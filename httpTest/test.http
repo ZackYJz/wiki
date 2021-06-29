@@ -1,0 +1,17 @@
+POST http://localhost:8081/hi
+Content-Type: application/x-www-form-urlencoded
+
+name= zackyj
+#单元测试
+> {%
+client.test("test-hi", function() {
+  client.assert(response.status === 200, "Response status is not 200");
+  client.log(response.body);
+  client.assert(response.body === "hizackyj","结果验证失败")
+});
+%}
+###
+GET http://localhost:8081/hello
+Accept: application/json
+
+###
