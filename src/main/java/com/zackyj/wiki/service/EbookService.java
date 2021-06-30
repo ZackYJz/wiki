@@ -5,6 +5,7 @@ import com.zackyj.wiki.mapper.EbookMapper;
 import com.zackyj.wiki.model.pojo.Ebook;
 import com.zackyj.wiki.model.req.EbookReq;
 import com.zackyj.wiki.model.resp.EbookResp;
+import com.zackyj.wiki.util.CopyUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,12 +25,7 @@ public class EbookService {
 
     public List<EbookResp> list(EbookReq ebookReq) {
         List<Ebook> ebookList = ebookMapper.selectByName(ebookReq.getName());
-        List<EbookResp> ebookRespList = new ArrayList<>();
-        for (Ebook ebook : ebookList) {
-            EbookResp ebookResp = new EbookResp();
-            BeanUtils.copyProperties(ebook,ebookResp);
-            ebookRespList.add(ebookResp);
-        }
+        List<EbookResp> ebookRespList = CopyUtil.copyList(ebookList, EbookResp.class);
         return ebookRespList;
     }
 }
