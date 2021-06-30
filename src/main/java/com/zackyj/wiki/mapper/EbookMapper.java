@@ -2,6 +2,7 @@ package com.zackyj.wiki.mapper;
 
 import com.zackyj.wiki.model.pojo.Ebook;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -20,4 +21,6 @@ public interface EbookMapper {
     int updateByPrimaryKey(Ebook record);
 
     List<Ebook> selectAll();
+
+    List<Ebook> selectByName(String name);
 }
