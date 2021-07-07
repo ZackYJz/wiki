@@ -1,5 +1,6 @@
 <template>
   <div class="home">
+    <a-typography-title>h1. Ant Design Vue</a-typography-title>
     <img alt="Vue logo" src="../assets/logo.png">
     <HelloWorld msg="Welcome to Your Vue.js + TypeScript App"/>
   </div>
