@@ -4,8 +4,6 @@
       <a-layout-sider width="200" style="background: #fff">
         <a-menu
             mode="inline"
-            v-model:selectedKeys="selectedKeys2"
-            v-model:openKeys="openKeys"
             style="height: 100%"
         >
           <a-sub-menu key="sub1">
@@ -55,12 +53,25 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent,onMounted,ref } from 'vue';
+import axios from 'axios';
 
 export default defineComponent({
   name: 'Home',
-  components: {
+  setup(){
+    const ebooks =ref();
 
-  },
+    //初始化方法
+    onMounted(()=>{
+      axios.get("http://localhost:8081/ebook/list").then((response) => {
+        const data=response.data;
+        ebooks.value = data.content;
+        console.log(response);
+      });
+    })
+    return{
+      ebooks,
+    }
+  }
 });
 </script>
