@@ -35,4 +35,10 @@ public class EbookController {
         ebookService.updateBookInfo(ebookReq);
         return CommonResp.success();
     }
+
+    @DeleteMapping("/delete/{id}")
+    public CommonResp deleteBook(@PathVariable Long id){
+        ebookService.deleteBook(id);
+        return CommonResp.success();
+    }
 }

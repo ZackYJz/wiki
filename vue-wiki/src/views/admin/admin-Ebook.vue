@@ -20,16 +20,24 @@
         <template v-slot:action="{ text, record }">
           <a-space size="small">
             <router-link :to="'/admin/doc?ebookId=' + record.id">
-              <a-button type="primary">
+              <a-button type="default">
                 文档管理
               </a-button>
             </router-link>
             <a-button type="primary" @click="edit(record)">
-              编辑
+                编辑
             </a-button>
+            <a-popconfirm
+                title="确认删除?"
+                ok-text="是"
+                cancel-text="否"
+                @confirm="del(record.id)"
+            >
               <a-button type="danger">
                 删除
               </a-button>
+            </a-popconfirm>
+
           </a-space>
         </template>
       </a-table>
@@ -59,9 +67,10 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, ref } from 'vue';
+import { defineComponent, onMounted, ref,createVNode} from 'vue';
 import axios from 'axios';
 import { message } from 'ant-design-vue';
+import { Modal } from 'ant-design-vue';
 // import {Tool} from "@/util/tool";
 
 export default defineComponent({
@@ -189,12 +198,35 @@ export default defineComponent({
     });
 
     /*
-    *  新增方法
+    *  新增电子书
     * */
     const add = ()=>{
       //显示模态框
       modalVisible.value = true;
       ebook.value = {}
+    }
+
+    /*
+    * 删除电子书
+    * */
+    const del = (id:number) =>{
+      loading.value = true;
+      // 如果不清空现有数据，则编辑保存重新加载数据后，再点编辑，则列表显示的还是编辑前的数据
+      //ebooks.value = [];
+      axios.delete("/ebook/delete/"+id).then((response) => {
+        const data = response.data; // data = commonResp
+        if (data.success) {  //返回成功结果
+          message.success("删除成功");
+          // 重新加载列表
+          handleQuery({
+            page: pagination.value.current,
+            size: pagination.value.pageSize,
+          });
+        } else {  //返回失败结果
+          //弹出提示框
+          message.error(data.message);
+        }
+      });
     }
 
     return {
@@ -206,6 +238,7 @@ export default defineComponent({
       ebook,
       edit,
       add,
+      del,
 
       modalVisible,
       modalLoading,

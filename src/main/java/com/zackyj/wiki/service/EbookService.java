@@ -53,4 +53,11 @@ public class EbookService {
             ebookMapper.updateByPrimaryKeySelective(ebook);
         }
     }
+
+    public void deleteBook(Long Id){
+        int n = ebookMapper.deleteByPrimaryKey(Id);
+        if(n<1){
+            Log.error("删除电子书失败");
+        }
+    }
 }
