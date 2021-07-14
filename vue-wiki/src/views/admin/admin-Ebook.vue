@@ -19,7 +19,7 @@
                 文档管理
               </a-button>
             </router-link>
-            <a-button type="primary">
+            <a-button type="primary" @click="edit(record)">
               编辑
             </a-button>
               <a-button type="danger">
@@ -30,7 +30,27 @@
       </a-table>
     </a-layout-content>
   </a-layout>
-
+  <a-modal
+      title="编辑电子书"
+      v-model:visible="modalVisible"
+      :confirm-loading="modalLoading"
+      @ok="handleModalOk"
+  >
+    <a-form :model="ebook" :label-col="{ span: 6 }" :wrapper-col="{ span: 18 }">
+      <a-form-item label="封面">
+        <a-input v-model:value="ebook.cover" />
+      </a-form-item>
+      <a-form-item label="名称">
+        <a-input v-model:value="ebook.name" />
+      </a-form-item>
+      <a-form-item label="分类">
+        <a-input v-model:value="ebook.categoryId1"/>
+      </a-form-item>
+      <a-form-item label="描述">
+        <a-input v-model:value="ebook.description" type="textarea" />
+      </a-form-item>
+    </a-form>
+  </a-modal>
 </template>
 
 <script lang="ts">
@@ -117,6 +137,28 @@ export default defineComponent({
       });
     };
 
+    // -------- 表单 ---------
+    /**
+     * 数组，[100, 101]对应：前端开发 / Vue
+     */
+    const ebook = ref();
+    const modalVisible = ref(false);
+    const modalLoading = ref(false);
+    const handleModalOk = () => {
+      modalLoading.value = true;
+      setTimeout(() => {
+        modalVisible.value = false;
+        modalLoading.value = false;
+      }, 2000);
+    };
+
+    /**
+     * 编辑
+     */
+    const edit = (record :any) => {
+      modalVisible.value = true;
+      ebook.value = record;
+    };
 
     onMounted(() => {
       handleQuery({
@@ -131,6 +173,12 @@ export default defineComponent({
       columns,
       loading,
       handleTableChange,
+      ebook,
+      edit,
+
+      modalVisible,
+      modalLoading,
+      handleModalOk,
     }
   }
 });
