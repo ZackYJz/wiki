@@ -1,6 +1,6 @@
-package com.zackyj.wiki.model.resp;
+package com.zackyj.wiki.model.req;
 
-public class EbookResp {
+public class EbookUpdateReq {
     private Long id;
 
     private String name;
@@ -13,24 +13,15 @@ public class EbookResp {
 
     private String cover;
 
-    private Integer docCount;
-
-    private Integer viewCount;
-
-    private Integer voteCount;
-
     @Override
     public String toString() {
-        return "EbookResp{" +
+        return "EbookUpdateReq{" +
                        "id=" + id +
                        ", name='" + name + '\'' +
                        ", category1Id=" + category1Id +
                        ", category2Id=" + category2Id +
                        ", description='" + description + '\'' +
                        ", cover='" + cover + '\'' +
-                       ", docCount=" + docCount +
-                       ", viewCount=" + viewCount +
-                       ", voteCount=" + voteCount +
                        '}';
     }
 
@@ -80,29 +71,5 @@ public class EbookResp {
 
     public void setCover(String cover) {
         this.cover = cover;
-    }
-
-    public Integer getDocCount() {
-        return docCount;
-    }
-
-    public void setDocCount(Integer docCount) {
-        this.docCount = docCount;
-    }
-
-    public Integer getViewCount() {
-        return viewCount;
-    }
-
-    public void setViewCount(Integer viewCount) {
-        this.viewCount = viewCount;
-    }
-
-    public Integer getVoteCount() {
-        return voteCount;
-    }
-
-    public void setVoteCount(Integer voteCount) {
-        this.voteCount = voteCount;
     }
 }

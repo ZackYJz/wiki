@@ -56,7 +56,7 @@
 <script lang="ts">
 import { defineComponent, onMounted, ref } from 'vue';
 import axios from 'axios';
-// import { message } from 'ant-design-vue';
+import { message } from 'ant-design-vue';
 // import {Tool} from "@/util/tool";
 
 export default defineComponent({
@@ -137,19 +137,34 @@ export default defineComponent({
       });
     };
 
-    // -------- 表单 ---------
     /**
-     * 数组，[100, 101]对应：前端开发 / Vue
+     *  电子书编辑
      */
     const ebook = ref();
     const modalVisible = ref(false);
     const modalLoading = ref(false);
     const handleModalOk = () => {
+      //显示 Loading 效果
       modalLoading.value = true;
-      setTimeout(() => {
-        modalVisible.value = false;
+      // ebook.value.category1Id = categoryIds.value[0];
+      // ebook.value.category2Id = categoryIds.value[1];
+      axios.post("/ebook/save", ebook.value).then((response) => {
+        //显示 Loading 效果
         modalLoading.value = false;
-      }, 2000);
+        const data = response.data; // data = commonResp
+        if (data.success) {  //返回成功结果
+          //取消加载效果
+          modalVisible.value = false;
+          // 重新加载列表
+          handleQuery({
+            page: pagination.value.current,
+            size: pagination.value.pageSize,
+          });
+        } else {  //返回失败结果
+          //弹出提示框
+          message.error(data.message);
+        }
+      });
     };
 
     /**
