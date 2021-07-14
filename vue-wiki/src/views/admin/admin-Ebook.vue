@@ -1,6 +1,11 @@
 <template>
   <a-layout style="padding: 24px 0; background: #fff">
     <a-layout-content :style="{ padding: '0 24px', minHeight: '280px' }">
+      <p>
+        <a-button type="primary" @click="add()" size='large'>
+          新增Wiki
+        </a-button>
+      </p>
       <a-table
           :columns="columns"
           :row-key="record => record.id"
@@ -64,6 +69,7 @@ export default defineComponent({
   setup() {
     //const param = ref();
     //param.value = {};
+    //TODO 取消模态表单框的响应式变量
     const ebooks = ref()
     const pagination = ref({ //定义分页
       current: 1,  //当前页
@@ -182,6 +188,15 @@ export default defineComponent({
       });
     });
 
+    /*
+    *  新增方法
+    * */
+    const add = ()=>{
+      //显示模态框
+      modalVisible.value = true;
+      ebook.value = {}
+    }
+
     return {
       ebooks,
       pagination,
@@ -190,6 +205,7 @@ export default defineComponent({
       handleTableChange,
       ebook,
       edit,
+      add,
 
       modalVisible,
       modalLoading,

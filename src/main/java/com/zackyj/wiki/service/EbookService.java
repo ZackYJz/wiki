@@ -9,6 +9,7 @@ import com.zackyj.wiki.model.req.EbookUpdateReq;
 import com.zackyj.wiki.model.resp.EbookResp;
 import com.zackyj.wiki.model.resp.PageResp;
 import com.zackyj.wiki.util.CopyUtil;
+import com.zackyj.wiki.util.SnowFlake;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -22,6 +23,8 @@ import java.util.List;
 public class EbookService {
     @Resource
     private EbookMapper ebookMapper;
+    @Resource
+    private SnowFlake snowFlake;
 
     private static final Logger Log = LoggerFactory.getLogger(EbookService.class);
 
@@ -43,6 +46,8 @@ public class EbookService {
     public void updateBookInfo(EbookUpdateReq ebookReq) {
         Ebook ebook = CopyUtil.copy(ebookReq, Ebook.class);
         if(ObjectUtils.isEmpty(ebook.getId())){
+            long sfId = snowFlake.nextId();
+            ebook.setId(sfId);
             ebookMapper.insert(ebook);
         }else{
             ebookMapper.updateByPrimaryKeySelective(ebook);
