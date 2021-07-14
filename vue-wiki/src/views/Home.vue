@@ -95,9 +95,12 @@ export default defineComponent({
 
     //初始化方法
     onMounted(()=>{
-      axios.get("/ebook/list").then((response) => {
+      axios.get("/ebook/list",{params:{
+        page:1,
+          size:100
+        }}).then((response) => {
         const data=response.data;
-        ebooks.value = data.content;
+        ebooks.value = data.content.list;
       });
     })
     return{
