@@ -1,11 +1,23 @@
 <template>
   <a-layout style="padding: 24px 0; background: #fff">
     <a-layout-content :style="{ padding: '0 24px', minHeight: '280px' }">
-      <p>
-        <a-button type="primary" @click="add()" size='large'>
-          新增Wiki
-        </a-button>
-      </p>
+      <a-row type="flex" justify="space-between">
+        <a-col :span="4">
+          <a-input-search
+              v-model:value="param"
+              placeholder="搜索 wiki"
+              enter-button
+              @search="handleQuery"
+          />
+        </a-col>
+        <a-col :span="4">
+          <a-button type="primary"  @click="add()" size='default'>
+            新增Wiki
+          </a-button>
+        </a-col>
+
+      </a-row>
+      <br />
       <a-table
           :columns="columns"
           :row-key="record => record.id"
@@ -71,13 +83,13 @@ import { defineComponent, onMounted, ref,createVNode} from 'vue';
 import axios from 'axios';
 import { message } from 'ant-design-vue';
 import { Modal } from 'ant-design-vue';
-// import {Tool} from "@/util/tool";
+import {Tool} from "@/util/tool";
 
 export default defineComponent({
   name: 'AdminEbook',
   setup() {
-    //const param = ref();
-    //param.value = {};
+    const param = ref();
+    param.value = "";
     //TODO 取消模态表单框的响应式变量
     const ebooks = ref()
     const pagination = ref({ //定义分页
@@ -130,7 +142,8 @@ export default defineComponent({
       axios.get("/ebook/list", {
         params:{
           page:params.page,
-          size:params.size
+          size:params.size,
+          name:param.value
         }
       }).then((response) => {
         loading.value = false;
@@ -187,7 +200,8 @@ export default defineComponent({
      */
     const edit = (record :any) => {
       modalVisible.value = true;
-      ebook.value = record;
+      //ebook.value = record; 取消响应式
+      ebook.value = Tool.copy(record);
     };
 
     onMounted(() => {
@@ -239,6 +253,8 @@ export default defineComponent({
       edit,
       add,
       del,
+      handleQuery,
+      param,
 
       modalVisible,
       modalLoading,
